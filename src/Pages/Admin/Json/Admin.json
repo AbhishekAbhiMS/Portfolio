@@ -1,0 +1,122 @@
+
+{
+    "id": "Narendra Modi",
+    "ProfileImg": "https://media-cldnry.s-nbcnews.com/image/upload/t_fit-760w,f_auto,q_auto:best/rockcms/2023-08/230811-Narendra-Modi-al-0747-627601.jpg",
+    "SubTitle": "Indian prime minister",
+    
+    "Experience": 10,
+    "Income": 1000000,
+    "Joining": "Join in 2 months",
+    "AboutMe": {
+        "Name": " Modi",
+        "Title": "Lorem",
+        "PhoneNumber": 9000000000,
+        "Email": "text@text",
+        "Place": "Benglore",
+        "DateOfBirth": "01/01/10000",
+        "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+    },
+    "JobDetails": [
+        {
+            "JobTitle": "Chife Minister",
+            "CompanyName": "Gujarat",
+            "FromDate": 2001,
+            "Todate": 2014,
+            "AboutJob": {
+                "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,",
+                "Points": [
+                    {
+                        "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown."
+                    },
+                    {
+                        "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown."
+                    },
+                    {
+                        "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown."
+                    }
+                ]
+            }
+        },
+        {
+            "JobTitle": "Chife Minister",
+            "CompanyName": "Gujarat",
+            "FromDate": 2001,
+            "Todate": 2014,
+            "AboutJob": {
+                "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,",
+                "Points": [
+                    {
+                        "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown."
+                    },
+                    {
+                        "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown."
+                    },
+                    {
+                        "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown."
+                    }
+                ]
+            }
+        }
+    ],
+    "Achievements": [
+        {
+            "AchievementTitle": "PM",
+            "FromDate": 2014,
+            "Todate": 2015,
+            "Images": [],
+            "AboutAchievement": {
+                "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,",
+                "Points": [
+                    {
+                        "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown."
+                    },
+                    {
+                        "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown."
+                    },
+                    {
+                        "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown."
+                    }
+                ]
+            }
+        },
+        {
+            "AchievementTitle": "Prime minister",
+            "FromDate": 2014,
+            "Todate": 2015,
+            "Images": [
+                "https://c.ndtvimg.com/2024-04/0o1mvqvg_pm-modi-ani_625x300_15_April_24.jpeg",
+                "https://cdn.narendramodi.in/cmsuploads/0.04249700_1708841147_banner.jpg",
+                "https://static.toiimg.com/thumb/msid-106536041,width-1280,height-720,resizemode-4/106536041.jpg",
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRSa2sJCUvcG2WIVvgpJySdYrPUz_Or8N_8xSJ9HboPw&s"
+            ],
+            "AboutAchievement": {
+                "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,",
+                "Points": [
+                    {
+                        "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown."
+                    },
+                    {
+                        "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown."
+                    },
+                    {
+                        "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown."
+                    }
+                ]
+            }
+        }
+    ],
+    "Skills": [
+        "Leadership",
+        "MS",
+        "Office",
+        "Words",
+        "Development"
+    ],
+    "Languages": [
+        "Leadership",
+        "MS",
+        "Office",
+        "Words",
+        "Development"
+    ]
+}

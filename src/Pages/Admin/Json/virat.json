@@ -1,0 +1,122 @@
+
+{
+    "id": "Virat king",
+    "ProfileImg": "https://static.indiatvnews.com/ins-web/images/kohli-profile-1540274232.jpg",
+    "SubTitle": "Indian cricketer",
+    
+    "Experience": 14,
+    "Income": 3000000,
+    "Joining": "Join in 3 months",
+    "AboutMe": {
+        "Name": " Virat",
+        "Title": "player",
+        "PhoneNumber": 9887765443,
+        "Email": "virat@text",
+        "Place": "Benglore",
+        "DateOfBirth": "01/01/20000",
+        "Details": " virat Lorem rinting and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+    },
+    "JobDetails": [
+        {
+            "JobTitle": "virat",
+            "CompanyName": "cricket",
+            "FromDate": 2015,
+            "Todate": 2020,
+            "AboutJob": {
+                "Details": " virat text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,",
+                "Points": [
+                    {
+                        "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown."
+                    },
+                    {
+                        "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown."
+                    },
+                    {
+                        "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown."
+                    }
+                ]
+            }
+        },
+        {
+            "JobTitle": "batsman",
+            "CompanyName": "RCb",
+            "FromDate": 2014,
+            "Todate": 2024,
+            "AboutJob": {
+                "Details": "virat Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,",
+                "Points": [
+                    {
+                        "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown."
+                    },
+                    {
+                        "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown."
+                    },
+                    {
+                        "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown."
+                    }
+                ]
+            }
+        }
+    ],
+    "Achievements": [
+        {
+            "AchievementTitle": "caption",
+            "FromDate": 2014,
+            "Todate": 2025,
+            "Images": [],
+            "AboutAchievement": {
+                "Details": "virat Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,",
+                "Points": [
+                    {
+                        "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown."
+                    },
+                    {
+                        "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown."
+                    },
+                    {
+                        "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown."
+                    }
+                ]
+            }
+        },
+        {
+            "AchievementTitle": "MOM",
+            "FromDate": 2014,
+            "Todate": 2025,
+            "Images": [
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTByfKIPenY5cSdwSlZ5LjJ0DKQjKzvlM6e5P-mW9FXng&s",
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnkdusGLh9aCab1TBD6hRJhjAJb89Pv3MbYXxh1ZDIUA&s",
+                "https://pbs.twimg.com/media/F-Pd1dIWQAADv6f.jpg",
+                "https://pbs.twimg.com/media/Fgj8dVrVQAIQc1r?format=jpg&name=4096x4096"
+            ],
+            "AboutAchievement": {
+                "Details": "virat Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,",
+                "Points": [
+                    {
+                        "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown."
+                    },
+                    {
+                        "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown."
+                    },
+                    {
+                        "Details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown."
+                    }
+                ]
+            }
+        }
+    ],
+    "Skills": [
+        "Leadership",
+        "MS",
+        "Office",
+        "Words",
+        "Development"
+    ],
+    "Languages": [
+        "Leadership",
+        "MS",
+        "Office",
+        "Words",
+        "Development"
+    ]
+}

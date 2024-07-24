@@ -1,0 +1,40 @@
+
+.MuiChartsLegend-series{
+    display: none;
+}
+
+.css-3dcfwk-MuiBarElement-root{
+    fill: #E3E3E3 !important;
+}
+.css-1k2u9zb-MuiChartsAxis-root .MuiChartsAxis-line {
+stroke: white !important;}
+.css-1k2u9zb-MuiChartsAxis-root .MuiChartsAxis-tick{
+    stroke: white !important;}
+.recharts-cartesian-axis-line{
+    display: none !important;
+}
+.recharts-cartesian-grid-horizontal{
+    display: none !important;
+
+}
+.recharts-cartesian-grid-vertical{
+    display: none !important;
+
+}
+.recharts-cartesian-axis-tick-line{
+    display: none !important;
+   
+}
+
+
+
+
+.chart-container {
+    padding: 20px;
+  }
+  
+  /* Additional styling for cylindrical bars */
+  .chart-container .recharts-bar-rectangle {
+    display: none; /* Hide default rectangle bars */
+  }
+  

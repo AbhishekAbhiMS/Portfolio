@@ -1,0 +1,11 @@
+.css-19knu6j-MuiPaper-root-MuiAccordion-root{
+    box-shadow: 0 0 0 white !important;
+}
+.css-1f773le-MuiButtonBase-root-MuiAccordionSummary-root{
+   
+    padding: 0 !important;}
+.horizontal-scroll-container{ 
+    overflow: scroll;
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none;
+}

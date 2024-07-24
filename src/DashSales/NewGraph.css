@@ -1,0 +1,9 @@
+.css-wjsjww-MuiChip-label{
+    padding-right: 0 !important;
+}
+@media only screen and (max-width: 464px) {
+    .dividerHide{
+        display: none;
+    }
+    
+}

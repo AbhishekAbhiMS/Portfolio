@@ -1,0 +1,4 @@
+.paymet{
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none;
+}

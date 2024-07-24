@@ -1,0 +1,10 @@
+.horizontal-scroll-container{
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none;
+}
+.homebackgroung{
+    background:linear-gradient(180deg, #E7F5FE 0%, #FBFAFD 100%)}
+    .css-1086bdv-MuiPaper-root-MuiAccordion-root{
+        box-shadow: 0 0 0 white !important;
+       border-top: 1px solid #d8d4d4 !important;
+    }

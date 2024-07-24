@@ -1,0 +1,21 @@
+.MuiBarElement-root .MuiBarElement-series-auto-generated-id-0 .css-1qdzy9k-MuiBarElement-root{
+    border-radius: 200px !important;
+}
+.css-wjsjww-MuiChip-label{
+    padding-right: 0 !important;
+}
+@media only screen and (max-width: 464px) {
+    .dividerHide{
+        display: none;
+    }
+    
+}
+.recharts-cartesian-axis-line{
+    display: none !important;
+}
+line{
+    display: none !important;
+}
+.recharts-reference-line-line{
+    display: block !important;
+}

@@ -1,0 +1,1372 @@
+
+import React, { useState, useEffect } from 'react';
+import { styled, useTheme } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import MuiDrawer from '@mui/material/Drawer';
+import MuiAppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import List from '@mui/material/List';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import MailIcon from '@mui/icons-material/Mail';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import SettingsIcon from '@mui/icons-material/Settings';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
+import { Link } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import AuctionIcon from './Icons/Auction.svg'
+import DashBoardIcon from './Icons/DashBoard.svg'
+import ChitIcon from './Icons/Chit.svg'
+import GuarantorDetailsIcon from './Icons/GuarantorDetails.svg'
+import PaymentVoucherIcon from './Icons/PaymentVoucher.svg'
+import CollectionIcon from './Icons/collection.svg'
+import favoriteIcon from './Icons/favorite.svg'
+import OperationIcon from './Icons/Operation.svg'
+import AccountIcon from './Icons/Account.svg'
+import HRIcon from './Icons/HR.svg'
+import employeeIcon from './Icons/employee.svg'
+import incentiveIcon from './Icons/incentive.svg'
+import holidayIcon from './Icons/holiday.svg'
+import reportIcons from './Icons/report.svg'
+import companyIcon from './Icons/company.svg'
+import departmentIcon from './Icons/department.svg'
+import addBranchIcon from './Icons/addBranch.svg'
+import hierarchyIcon from './Icons/hierarchy.svg'
+import bucketIcon from './Icons/bucket.svg'
+import kycIcon from './Icons/kyc.svg'
+import rolesIcon from './Icons/roles.svg'
+import vacantIcon from './Icons/vacant.svg'
+import smsIcon from './Icons/sms.svg'
+import AccountOpenIcon  from './Icons/AccountOpen.svg';
+import HROpenIcon  from './Icons/HROpen.svg';
+import OperationOpenIcon  from './Icons/OperationOpen.svg';
+import designationIcon from './Icons/designation.svg'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { ROUTES } from '../../navigation/constants';
+import { Icon } from '@mui/material';
+import AppsIcon from '@mui/icons-material/Apps';
+import { ArrowDownward, ArrowRight, NavigateNext } from '@mui/icons-material';
+import Dialog from '@mui/material/Dialog';
+import { getPageData } from '../../../service';
+import { useLocation } from 'react-router-dom';
+
+const drawerWidth = 260;
+
+const openedMixin = (theme) => ({
+  width: drawerWidth,
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
+  overflowX: 'hidden',
+});
+
+const closedMixin = (theme) => ({
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  overflowX: 'hidden',
+  width: `calc(${theme.spacing(11)} + 1px)`,
+  [theme.breakpoints.up('sm')]: {
+    width: `calc(${theme.spacing(11)} + 1px)`,
+  },
+});
+
+const DrawerHeader = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  padding: theme.spacing(0, 1),
+  ...theme.mixins.toolbar,
+}));
+
+const AppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) => prop !== 'open',
+})(({ theme, open }) => ({
+  zIndex: theme.zIndex.drawer + 1,
+  transition: theme.transitions.create(['width', 'margin'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  }),
+}));
+
+const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+  ({ theme, open }) => ({
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: 'nowrap',
+    boxSizing: 'border-box',
+    ...(open && {
+      ...openedMixin(theme),
+      '& .MuiDrawer-paper': openedMixin(theme),
+    }),
+    ...(!open && {
+      ...closedMixin(theme),
+      '& .MuiDrawer-paper': closedMixin(theme),
+    }),
+  }),
+);
+
+function SidebarDrawer(props) {
+  console.log(props,"darshankb")
+  const theme = useTheme();
+  const [open, setOpen] = useState(false);
+  const [get, setget] = useState('blue')
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [settingsMenuAnchor, setSettingsMenuAnchor] = useState(null);
+  const [mailMenuOpen, setMailMenuOpen] = React.useState(null);
+  const [showLogoutNotification, setShowLogoutNotification] = useState(false);
+  const [icons, setIcons] = useState(true);
+  const [performLogout, setPerformLogout] = useState(false)
+  const [settingsFinance, setSettingsFinance] = useState(null);
+  const [selectedItem, setSelectedItem] = useState('2021-22');
+
+  const [isStarClicked, setIsStarClicked] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+  const [selectedNavItem, setSelectedNavItem] = useState('Operation');
+  const [selectedNavIcon, setSelectedNavIcon] = useState(OperationOpenIcon);
+  const [resourceBundleData, setResourceBundleData] = useState("")
+  const [iconPaths, setIconPaths] = useState([OperationOpenIcon, AccountIcon, HRIcon]);
+const location=useLocation()
+    const getResourceBundleUrl = "getResourceBundle"
+    const getResourceBundleData = async () => {
+        let config = {
+            pageName: "MENU",
+            language: "en",
+            serviceType: "ADMIN"
+        }
+        let resInfo = await getPageData(getResourceBundleUrl, config)
+        setResourceBundleData(resInfo.resourceBundle)
+        console.log('MENU resourceBundleData : ', resInfo)
+    }
+ useEffect(()=>{
+        getResourceBundleData();
+      },[]);
+
+  const handleStarClick = () => {
+    setIsStarClicked(!isStarClicked);
+    // setShowMessage(true);
+
+    // Hide the message after a short delay
+    setTimeout(() => {
+      setShowMessage(false);
+    }, 2000);
+  };
+
+
+  const openIconPaths = [OperationOpenIcon, AccountOpenIcon, HROpenIcon]
+  const texts = ['Operation', 'Account', 'HR'];
+
+  const [board, setBoard] = useState(false);
+  const [dashboard, setDashboard] = useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const handleDashBoardClose = () => {
+    setDashboard(true);
+  };
+
+  const [chit, setChit] = useState(false);
+  const [operation, setOperation] = useState(true);
+  const [account, setAccount] = useState(false);
+  const [hr, setHr] = useState(false);
+  const [chitpayment, setChitpayment] = useState(null);
+
+  const handleChitOpen = () => {
+    console.log("Clicked")
+    setChit(true);
+    setChitpayment(null);
+  };
+  const handleChitClose = (event) => {
+    setChit(false);
+    setChitpayment(event.currentTarget);
+  };
+
+  const [auct, setAuct] = useState(false);
+  const [auction, setAuction] = useState(null);
+
+  const handleAuctOpen = () => {
+    console.log("Clicked")
+    setAuct(true);
+    setAuction(null);
+  };
+  const handleAuctClose = (event) => {
+    setAuct(false);
+    setAuction(event.currentTarget);
+  };
+
+  const [guarant, setGuarant] = useState(false);
+  const [guarantor, setGuarantor] = useState(null);
+
+  const handleGuarantorOpen = () => {
+    console.log("Clicked")
+    setGuarant(true);
+    setGuarantor(null);
+  };
+  const handleGuarantorClose = (event) => {
+    setGuarant(false);
+    setGuarantor(event.currentTarget);
+  };
+
+  const [payment, setPayment] = useState(false);
+  const [voucher, setvoucher] = useState(null);
+
+  const handlePaymentOpen = () => {
+    console.log("Clicked")
+    setPayment(true);
+    setvoucher(null);
+  };
+  const handlePaymentClose = (event) => {
+    setPayment(false);
+    setvoucher(event.currentTarget);
+  };
+
+  const [collect, setCollect] = useState(false);
+  const [collection, setCollection] = useState(null);
+
+  const handleCollectionOpen = () => {
+    console.log("Clicked")
+    setCollect(true);
+    setCollection(null);
+  };
+  const handleCollectionClose = (event) => {
+
+    setCollect(false);
+    setCollection(event.currentTarget);
+  };
+
+  const [report, setReport] = useState(false);
+  const [reports, setReports] = useState(null);
+
+  const handleReportOpen = () => {
+    console.log("Clicked")
+    setReport(true);
+    setReports(null);
+  };
+  const handleReportClose = (event) => {
+
+    setReport(false);
+    setReports(event.currentTarget);
+  };
+
+  const handleDashBoardOpen = () => {
+    setOpen(!open);
+  };
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+    // setget('White');
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+    setget('blue');
+  };
+  const handleSettingsMenuOpen = (event) => {
+    setSettingsMenuAnchor(event.currentTarget);
+  };
+
+  const handleSettingsMenuClose = () => {
+    setSettingsMenuAnchor(null);
+  };
+
+  const handleSettingsFinanceOpen = (event) => {
+    setSettingsFinance(event.currentTarget);
+  };
+
+  const handleSettingsFinanceClose = () => {
+    setSettingsFinance(null);
+  };
+
+  const handleMenuItemClick = (item) => {
+    setSelectedItem(item);
+    setDialogOpen(false);
+    setIsDropdownOpen(false);
+  };
+
+  const handleDialogOpen = () =>{
+    setDialogOpen(true)
+  }
+
+  const handleNavMenu = (text) => {
+    if (text === "Account") {
+      setOperation(false)
+      setHr(false)
+      setAccount(true)
+      setSelectedNavIcon(AccountOpenIcon)
+      setIconPaths([OperationIcon, AccountOpenIcon, HRIcon])
+    }
+    if (text === "Operation") {
+      setOperation(true)
+      setHr(false)
+      setAccount(false)
+      setSelectedNavIcon(OperationOpenIcon)
+      setIconPaths([OperationOpenIcon, AccountIcon, HRIcon])
+    }
+    if (text === "HR") {
+      setOperation(false)
+      setHr(true)
+      setAccount(false)
+      setSelectedNavIcon(HROpenIcon)
+      setIconPaths([OperationIcon, AccountIcon, HROpenIcon])
+    }
+    setSelectedNavItem(text);
+  }
+
+  const handleLogoutNotificationClose = () => {
+    setShowLogoutNotification(false);
+  };
+
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleCancel = () => {
+    handleMenuClose();
+  };
+
+  const handleLogout = () => {
+    setShowConfirmation(true);
+    handleMenuClose();
+  };
+  useEffect(() => {
+    if (performLogout == true) {
+      localStorage.removeItem('token')
+      window.location.replace('/admin/index.html');
+    }
+  }, [performLogout])
+
+  const handleConfirmationYes = () => {
+    setShowConfirmation(false);
+    setPerformLogout(true)
+  };
+
+  const handleConfirmationNo = () => {
+    setShowConfirmation(false);
+  };
+
+  useEffect(() => {
+    const handlePageLeave = (e) => {
+      if (showConfirmation) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+
+    window.addEventListener('beforeunload', handlePageLeave);
+
+    return () => {
+      window.removeEventListener('beforeunload', handlePageLeave);
+    };
+  }, [showConfirmation]);
+
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleDropdownItemClick = (item) => {
+    console.log(`Selected item: ${item}`);
+    setIsDropdownOpen(false);
+  };
+
+
+
+useEffect(()=>{
+setIsDropdownOpen(false)
+},[location.pathname])
+
+  return (
+    <Box  style={{ display: 'flex' }}>
+      {/* <CssBaseline /> */}
+      <AppBar sx={{ position: "fixed", width: '100%', height: '64px', display: 'inline', background: 'linear-gradient(180deg, #FF4A00 50%, white 50%)',borderBottom:"3px solid #FF4A00" }} >
+        <Toolbar sx={{ backgroundColor: 'white', float: 'left', width: {xs:"30%",lg:'20%',md:"30%",borderBottom:"3px solid #FF4A00"}, borderTopRightRadius: '30px 65%' }}>
+          <img src="https://media.licdn.com/dms/image/C4D0BAQHWv-o0pPj_ZQ/company-logo_200_200/0/1633354473586?e=2147483647&v=beta&t=1dgyLZsBRe9kgXxFvIdwOm3TFdBhaYiZ2aG5PJ2UM70" alt="Icon" style={{ width: '50px', height: '48px', marginRight: '0px' }} />
+          <Typography variant="h6" sx={{ fontSize: '1.1rem', color: '#004C8F', justifyContent: 'center', alignItems: 'center',display: 'flex',paddingLeft:"1rem",fontWeight:"700",lineHeight:"24px" }} >
+            {resourceBundleData?.Kodachadrichit?.label}</Typography>
+        </Toolbar>
+        <Toolbar sx={{ backgroundColor: '#FF4A00', float: 'right', width: {xs:"70%",lg:'80%',md:"70%",}, left: '-2px', borderBottomLeftRadius: '30px 75%' ,borderBottom:"3px solid #FF4A00"}}>
+          <Typography style={{ display: 'inline-block' ,width:"100%",paddingRight:"2.5rem"}}>
+            <div style={{ display: 'flex', alignItems: 'right', marginLeft: 'auto', justifyContent: 'right', float:"right" }}>
+              {account === true ? (
+                <div class="move-left" style={{ display: 'flex', alignItems: 'right' }}>
+                  <ExpandMoreIcon
+                    sx={{
+                      fontSize: '30px',
+                      color: 'white',
+                      cursor: 'pointer',
+                    }}
+                    onClick={handleSettingsFinanceOpen}
+                  />
+                </div>
+              ) : (
+                <div> </div>
+              )}
+              <StarBorderIcon
+                sx={{
+                  fontSize: '30px',
+                  
+                  marginTop: '9px',
+                  color: isStarClicked ? 'orange' : 'white',
+                  cursor: 'pointer',
+                }}
+                onClick={handleStarClick}
+              />
+
+              <NotificationsNoneIcon sx={{ fontSize: '30px', marginLeft: '20px', color: 'white', marginTop: '9px' }} />
+              <AccountCircleIcon sx={{ fontSize: '40px', marginLeft: '20px', color: 'white', marginTop: '6px' }} onClick={handleMenuOpen} />
+              <Typography component="div" style={{ maxWidth:'150px',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis' , alignItems: 'center', marginLeft: '10px', marginTop: '6px', display: 'flex' }} >
+                <Typography variant="h6" noWrap style={{fontSize: '16px',color: 'white'}}> {localStorage.getItem("userName")}</Typography>
+              </Typography>
+              <KeyboardArrowDownIcon sx={{ fontSize: '30px', marginLeft: '20px', color: 'white', marginTop: '12px' }} onClick={handleMenuOpen} ></KeyboardArrowDownIcon>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+              >
+                <MenuItem style={{ width: '250px' }} onClick={handleCancel}>
+                  <LockOutlinedIcon /> {resourceBundleData?.ChangePass?.label}
+                </MenuItem>
+                <MenuItem style={{ width: '250px' }} onClick={handleLogout}>
+                  <ExitToAppOutlinedIcon /> {resourceBundleData?.Logout?.label}
+                </MenuItem>
+              </Menu>
+              {showConfirmation && (
+                <div className="confirmation-popup">
+                  <div className="popup-content">
+                    <div className="popup-text">
+                      <p>{resourceBundleData?.Areyousure?.label}</p>
+                    </div>
+                    <div className="popup-buttons">
+                      <button onClick={handleConfirmationYes} style={{ marginRight: '10px' }}>Yes</button>
+                      <button onClick={handleConfirmationNo}>No</button>
+                    </div>
+                  </div>
+                </div>
+
+              )}
+              <div
+
+                onClick={toggleDropdown}
+                style={{
+                  fontSize: '80px',
+                  marginLeft: '40px',
+                  color: 'white',
+                  marginTop: '7px',
+                  cursor: 'pointer',
+                }}
+              >
+                < SettingsIcon
+                  style={{
+                    fontSize: '30px',
+                    width: '30px',
+                    height: '30px',
+                    marginBottom: '5px',
+                  }} />
+              </div>
+
+              {isDropdownOpen && (
+                <div style={{
+                  position: 'absolute',
+                    top: "70px",
+                    left: '0',
+                  width:"100%",
+                  height:"100vh",
+                  zIndex:1000
+                }} onClick={()=>{ setIsDropdownOpen(false)
+                console.log("darshankb")}}>
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '0',
+                    right: '50px',
+                    width: '346px',
+                    height: '500px',
+                    backgroundColor: 'white',
+                    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
+                    zIndex: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    padding: '10px',
+                  }}
+                >
+
+                  <div style={{ display: 'grid', gap: '16px', marginBottom: '16px', fontSize: '15px', marginLeft: '12px' }}>
+                    <span>{resourceBundleData?.KCplServicce?.label}</span>
+                  </div>
+                  {/* First row of icons */}
+                  <div onClick={toggleDropdown} style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '16px' }}>
+                    <Link to="/company-view" onClick={handleSettingsMenuClose} style={{ textDecoration: 'none', color: 'black' }}>
+                      <div onClick={() => handleDropdownItemClick('Settings')} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <img src={companyIcon} alt="Favorite Icon" style={{ width: '53px', height: '53px' }} />
+                        <span>{resourceBundleData?.Company?.label}</span>
+                        <span>{resourceBundleData?.Profile?.label}</span>
+                      </div>
+                    </Link>
+                    <Link to="/branch-list" onClick={handleSettingsMenuClose} style={{ textDecoration: 'none', color: 'black' }}>
+                      <div onClick={() => handleDropdownItemClick('Settings')} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <img src={addBranchIcon} alt="Favorite Icon" style={{ width: '53px', height: '53px' }} />
+                        <span>{resourceBundleData?.Add?.label}</span>
+                        <span>{resourceBundleData?.Branches?.label}</span>
+                      </div>
+                    </Link>
+                    <Link to="/department" onClick={handleSettingsMenuClose} style={{ textDecoration: 'none', color: 'black' }}>
+                      <div onClick={() => handleDropdownItemClick('Settings')} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <img src={departmentIcon} alt="Favorite Icon" style={{ width: '53px', height: '53px' }} />
+                        <span style={{ marginBottom: '0px' }}>{resourceBundleData?.Department?.label}</span>
+                        <span></span>
+                      </div>
+                    </Link>
+                  </div>
+
+                  {/* Second row of icons */}
+                  <div onClick={toggleDropdown} style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '16px' }}>
+                    <Link to="/organization-hierarchy" onClick={handleSettingsMenuClose} style={{ textDecoration: 'none', color: 'black' }}>
+                      <div onClick={() => handleDropdownItemClick('AccountCircle')} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <img src={hierarchyIcon} alt="Favorite Icon" style={{ width: '53px', height: '53px' }} />
+                        <span style={{ marginBottom: '0px' }}>{resourceBundleData?.Hierachy?.label}</span>
+                      </div>
+                    </Link>
+                    <Link to="/Collection-bucket" onClick={handleSettingsMenuClose} style={{ textDecoration: 'none', color: 'black' }}>
+                      <div onClick={() => handleDropdownItemClick('AccountCircle')} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <img src={bucketIcon} alt="Favorite Icon" style={{ width: '53px', height: '53px' }} />
+                        {/* <span style={{ marginTop: '8px' }}>Collection</span> */}
+                        <span style={{ marginTop: '8px' }}>{resourceBundleData?.Collection?.label}</span>
+                        <span style={{ marginTop: '1px' }}>{resourceBundleData?.Bucket?.label}</span>
+
+                      </div>
+                    </Link>
+                    <Link to="/document-kyc" onClick={handleSettingsMenuClose} style={{ textDecoration: 'none', color: 'black' }}>
+                      <div onClick={() => handleDropdownItemClick('AccountCircle')} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <img src={kycIcon} alt="Favorite Icon" style={{ width: '53px', height: '53px' }} />
+                        <span style={{ marginTop: '8px' }}>{resourceBundleData?.Kyc?.label}</span>
+                        <span style={{ marginTop: '1px' }}>{resourceBundleData?.Grouping?.label}</span>
+                      </div>
+                    </Link>
+                  </div>
+
+                  {/* Third row of icons */}
+                  <div onClick={toggleDropdown} style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
+                    <div onClick={() => handleDropdownItemClick('AccountCircle')} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                      <img src={smsIcon} alt="Favorite Icon" style={{ width: '53px', height: '53px', marginRight: '4px' }} />
+                      <span style={{ marginTop: '8px' }}>{resourceBundleData?.Sms?.label}</span>
+                      <span style={{ marginTop: '1px' }}>{resourceBundleData?.Configuration?.label}</span>
+                    </div>
+                    <div onClick={() => handleDropdownItemClick('AccountCircle')} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                      <img src={rolesIcon} alt="Favorite Icon" style={{ width: '53px', height: '53px' }} />
+                      <span style={{ marginTop: '8px' }}>{resourceBundleData?.Role?.label}</span>
+                      <span style={{ marginTop: '1px' }}>{resourceBundleData?.Permission?.label}</span>
+                    </div>
+                    <div onClick={() => handleDropdownItemClick('AccountCircle')} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                      <img src={vacantIcon} alt="Favorite Icon" style={{ width: '53px', height: '53px' }} />
+                      <span style={{ marginTop: '8px' }}>{resourceBundleData?.Vacant?.label}</span>
+                      <span style={{ marginTop: '1px' }}>{resourceBundleData?.Configuration?.label}</span>
+                    </div>
+
+                  </div>
+
+                  <div style={{ display: 'grid',gridTemplateColumns: 'repeat(2, 1fr)',gap: '30%', marginTop: '40px'}}>
+                    <span style={{ marginLeft : '5%', marginTop: '3%'}}>{resourceBundleData?.Financialyear?.label}</span>
+                    <Button onClick={handleDialogOpen} style={{ marginLeft : '10%', position: 'relative'}}>{selectedItem}<ExpandMoreIcon /></Button>
+                    <Dialog on style={{marginLeft : '72%', marginBottom: '14%'}} open={dialogOpen}>
+                      <List sx={{ pt: 0 }}>
+                          <ListItem>
+                              <ListItemText style={{cursor : 'pointer'}} onClick={() => handleMenuItemClick('2021-22')} primary="2021-22" />
+                          </ListItem>
+                          <ListItem>
+                              <ListItemText style={{cursor : 'pointer'}} onClick={() => handleMenuItemClick('2020-21')} primary="2020-21" />
+                          </ListItem>
+                      </List>
+                    </Dialog>
+                  </div>
+                </div>
+                </div>
+              )}
+            </div>
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <button style={{zIndex: '2',position: 'absolute', marginLeft: '75px',marginTop: '20px', width: '28px',height:'28px',border : '1px solid #F6F6F6', borderRadius: '8px', padding:'6px', gap:'8px',backgroundColor:'white', alignItems:'center'}}><NavigateNext style={{fontSize:'20'}}/> </button>
+      <Drawer className='drawer' variant="permanent" open={open}
+        onMouseOver={handleDrawerOpen}
+        onMouseOut={handleDrawerClose}
+      >
+        <DrawerHeader>
+          <IconButton >
+            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          </IconButton>
+        </DrawerHeader>
+        <Divider />
+        {open ?
+          <List style={{ display: 'flex', justifyContent: 'center', marginRight: 17 }}>
+            {texts.map((text, index) => (
+              <ListItem onClick={() => handleNavMenu(text)} key={text} disablePadding>
+                <ListItemButton
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    minHeight: 48,
+                    paddingLeft: 2.5,
+                    textAlign: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <ListItemIcon
+                    style={{
+                      minWidth: 0,
+                      marginBottom: 5,
+                      justifyContent: 'center',
+                      marginLeft: 17,
+                      textAlign: 'center',
+                    }}
+                  >
+                   <img src={iconPaths[index]} onMouseOver={e => e.currentTarget.src = openIconPaths[index]} onMouseOut={e => e.currentTarget.src = iconPaths[index]} alt={text} />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={text}
+                    style={{
+                      opacity: 1,
+                      marginLeft: 17,
+                      textAlign: 'center',
+                    }} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+          : <List>
+            <ListItem key={selectedNavItem} disablePadding>
+              <ListItemButton
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  minHeight: 48,
+                  paddingLeft: 2.5,
+                  textAlign: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <ListItemIcon
+                  style={{
+                    minWidth: 0,
+                    marginBottom: 5,
+                    justifyContent: 'center',
+                    marginLeft: 17,
+                    textAlign: 'center',
+                  }}
+                >
+                  <img src={selectedNavIcon} alt={selectedNavItem} />
+                </ListItemIcon>
+                <ListItemText
+                  primary={selectedNavItem}
+                  style={{
+                    opacity: 1,
+                    marginLeft: 17,
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                  }} />
+              </ListItemButton>
+            </ListItem>
+          </List>}
+
+        <Divider />
+        <Typography style={{ marginTop: '20px', marginLeft: '30px', fontSize: '10px', color: '#757575' }}>{resourceBundleData?.Main?.label}</Typography>
+
+        {operation === true ?
+          <div style={{ marginLeft: '13px' }}>
+
+            <List>
+              {['Dashboard'].map((text, index) => (
+                <ListItem key={text} disablePadding style={{ display: 'block' }}>
+                  <ListItemButton
+                    style={{
+                      minHeight: 48,
+                      justifyContent: open ? 'initial' : 'center',
+                      paddingLeft: 2.5,
+                    }}
+                    component={Link}
+                    to={ROUTES.dashboard}
+                  >
+                    <ListItemIcon
+                      style={{
+                        minWidth: 0,
+                        marginRight: open ? 3 : 'auto',
+                        justifyContent: 'center',
+                        marginLeft: 15,
+                      }}
+                    >
+                      {index % 2 === 0 ? <img src={DashBoardIcon} /> : <MailIcon />}
+                    </ListItemIcon>
+                    <ListItemText primary={text} style={{ opacity: open ? 1 : 0, marginLeft: open ? 8 : 0, }} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+            <List>
+              {['Creation'].map((text, index) => (
+                <ListItem key={text} disablePadding style={{ display: 'block' }} onClick={chit === false ? handleChitOpen : handleChitClose}>
+                  <ListItemButton
+                    style={{
+                      minHeight: 48,
+                      // justifyContent: 'space-between',
+                      paddingLeft: 2.5,
+                      paddingRight: 2.5,
+                    }}
+
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <ListItemIcon
+                        style={{
+                          minWidth: 0,
+                          marginRight: open ? 3 : 'auto',
+                          justifyContent: 'center',
+                          marginLeft: 15,
+                        }}
+                      >
+                        {index % 2 === 0 ? <img src={ChitIcon} /> : <MailIcon />}
+                      </ListItemIcon>
+                      <ListItemText primary={text} style={{ opacity: open ? 1 : 0, marginLeft: open ? 8 : 0, }} />
+                    </div>
+                    {chit === false ?
+                      <KeyboardArrowDownIcon
+                        sx={{ fontSize: '20px', marginLeft: '95px', cursor: 'pointer' }}
+                        onClick={handleChitOpen}
+                      /> :
+                      <KeyboardArrowUpIcon
+                        sx={{ fontSize: '20px', marginLeft: '95px', cursor: 'pointer' }}
+                        onClick={handleChitClose}
+                      />
+                    }
+                  </ListItemButton>
+                  {open && (
+                    <div style={{ display: chit === false ? 'none' : 'flex', flexDirection: 'column', marginRight: '60px' }}>
+                      <MenuItem component={Link} to="create/scheme" onClick={handleSettingsMenuClose} style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Scheme?.label}</MenuItem>
+                      <MenuItem component={Link} to="create/group" onClick={handleSettingsMenuClose} style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Group?.label}</MenuItem>
+                      <MenuItem component={Link} to="generatepayable" onClick={handleSettingsMenuClose} style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Generatepay?.label}</MenuItem>
+                    </div>
+                  )}
+                </ListItem>
+              ))}
+            </List>
+
+            <List>
+              {['Auction'].map((text, index) => (
+                <ListItem key={text} disablePadding style={{ display: 'block' }} onClick={auct === false ? handleAuctOpen : handleAuctClose}>
+                  <ListItemButton
+                    style={{
+                      minHeight: 48,
+                      // justifyContent: 'space-between',
+                      paddingLeft: 2.5,
+                      paddingRight: 2.5,
+                    }}
+
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <ListItemIcon
+                        style={{
+                          minWidth: 0,
+                          marginRight: open ? 3 : 'auto',
+                          justifyContent: 'center',
+                          marginLeft: 15,
+                        }}
+                      >
+                        {index % 2 === 0 ? <img src={AuctionIcon} /> : <MailIcon />}
+                      </ListItemIcon>
+                      <ListItemText primary={text} style={{ opacity: open ? 1 : 0, marginLeft: open ? 8 : 0, }} />
+                    </div>
+                    {auct === false ?
+                      <KeyboardArrowDownIcon
+                        sx={{ fontSize: '20px', marginLeft: '100px', cursor: 'pointer' }}
+                        onClick={handleAuctOpen}
+                      /> :
+                      <KeyboardArrowUpIcon
+                        sx={{ fontSize: '20px', marginLeft: '100px', cursor: 'pointer' }}
+                        onClick={handleAuctClose}
+                      />
+                    }
+                  </ListItemButton>
+                  {open && (
+                    <div style={{ display: auct === false ? 'none' : 'flex', flexDirection: 'column', marginRight: '60px' }}>
+                      <MenuItem component={Link} to="auction/auctioninformation/1" onClick={handleSettingsMenuClose} style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Postauction?.label}</MenuItem>
+                      <MenuItem component={Link} to="auction/auctioninformation/2" onClick={handleSettingsMenuClose} style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Liveauction?.label}</MenuItem>
+                      <MenuItem component={Link} to="auction/auctioninformation/3" onClick={handleSettingsMenuClose} style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Sblist?.label}</MenuItem>
+                    </div>
+                  )}
+                </ListItem>
+              ))}
+            </List>
+
+            <List>
+              {['Guarantor details'].map((text, index) => (
+                <ListItem key={text} disablePadding style={{ display: 'block' }} onClick={guarant === false ? handleGuarantorOpen : handleGuarantorClose}>
+                  <ListItemButton
+                    style={{
+                      minHeight: 48,
+                      // justifyContent: 'space-between',
+                      paddingLeft: 2.5,
+                      paddingRight: 2.5,
+                    }}
+
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <ListItemIcon
+                        style={{
+                          minWidth: 0,
+                          marginRight: open ? 3 : 'auto',
+                          justifyContent: 'center',
+                          marginLeft: 15,
+                        }}
+                      >
+                        {index % 2 === 0 ? <img src={GuarantorDetailsIcon} /> : <MailIcon />}
+                      </ListItemIcon>
+                      <ListItemText primary={text} style={{ opacity: open ? 1 : 0, marginLeft: open ? 8 : 0, }} />
+                    </div>
+                    {guarant === false ?
+                      <KeyboardArrowDownIcon
+                        sx={{ fontSize: '20px', marginLeft: '35px', cursor: 'pointer' }}
+                        onClick={handleGuarantorOpen}
+                      /> :
+                      <KeyboardArrowUpIcon
+                        sx={{ fontSize: '20px', marginLeft: '35px', cursor: 'pointer' }}
+                        onClick={handleGuarantorClose}
+                      />
+                    }
+                  </ListItemButton>
+                  {open && (
+                    <div style={{ display: guarant === false ? 'none' : 'flex', flexDirection: 'column', marginRight: '60px' }}>
+                      <MenuItem component={Link} to="/document-dept-gaurantor" onClick={handleSettingsMenuClose} style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Addguarantor?.label}</MenuItem>
+                      <MenuItem component={Link} to="/document-admin-list" style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Aproveguarantor?.label}</MenuItem>
+                    </div>
+                  )}
+                </ListItem>
+              ))}
+            </List>
+
+            <List>
+              {['Payment voucher'].map((text, index) => (
+                <ListItem key={text} disablePadding style={{ display: 'block' }} onClick={payment === false ? handlePaymentOpen : handlePaymentClose}>
+                  <ListItemButton
+                    style={{
+                      minHeight: 48,
+                      // justifyContent: 'space-between',
+                      paddingLeft: 2.5,
+                      paddingRight: 2.5,
+                    }}
+
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <ListItemIcon
+                        style={{
+                          minWidth: 0,
+                          marginRight: open ? 3 : 'auto',
+                          justifyContent: 'center',
+                          marginLeft: 15,
+                        }}
+                      >
+                        {index % 2 === 0 ? <img src={PaymentVoucherIcon} /> : <MailIcon />}
+                      </ListItemIcon>
+                      <ListItemText primary={text} style={{ opacity: open ? 1 : 0, marginLeft: open ? 8 : 0, }} />
+                    </div>
+                    {payment === false ?
+                      <KeyboardArrowDownIcon
+                        sx={{ fontSize: '20px', marginLeft: '34px', cursor: 'pointer' }}
+                        onClick={handlePaymentOpen}
+                      /> :
+                      <KeyboardArrowUpIcon
+                        sx={{ fontSize: '20px', marginLeft: '34px', cursor: 'pointer' }}
+                        onClick={handlePaymentClose}
+                      />
+                    }
+                  </ListItemButton>
+                  {open && (
+                    <div style={{ display: payment === false ? 'none' : 'flex', flexDirection: 'column', marginRight: '60px' }}>
+                      <MenuItem component={Link} to="paymentinformation/1" onClick={handleSettingsMenuClose} style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >Sb & Asb</MenuItem>
+                      <MenuItem component={Link} to="paymentinformation/3" onClick={handleSettingsMenuClose} style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >Repayment</MenuItem>
+                      <MenuItem component={Link} to="paymentinformation/2" onClick={handleSettingsMenuClose} style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >Other</MenuItem>
+                    </div>
+                  )}
+                </ListItem>
+              ))}
+            </List>
+
+            <List>
+              {['Collection'].map((text, index) => (
+                <ListItem key={text} disablePadding style={{ display: 'block' }} onClick={collect === false ? handleCollectionOpen : handleCollectionClose}>
+                  <ListItemButton
+                    style={{
+                      minHeight: 48,
+                      paddingLeft: 2.5,
+                      paddingRight: 2.5,
+                    }}
+
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <ListItemIcon
+                        style={{
+                          minWidth: 0,
+                          marginRight: open ? 3 : 'auto',
+                          justifyContent: 'center',
+                          marginLeft: 15,
+                        }}
+                      >
+                        {index % 2 === 0 ? <img src={CollectionIcon} /> : <MailIcon />}
+                      </ListItemIcon>
+                      <ListItemText primary={text} style={{ opacity: open ? 1 : 0, marginLeft: open ? 8 : 0, }} />
+                    </div>
+                    {collect === false ?
+                      <KeyboardArrowDownIcon
+                        sx={{ fontSize: '20px', marginLeft: '83px', cursor: 'pointer' }}
+                        onClick={handleCollectionOpen}
+                      /> :
+                      <KeyboardArrowUpIcon
+                        sx={{ fontSize: '20px', marginLeft: '83px', cursor: 'pointer' }}
+                        onClick={handleCollectionClose}
+                      />
+                    }
+                  </ListItemButton>
+                  {open && (
+                    <div style={{ display: collect === false ? 'none' : 'flex', flexDirection: 'column', marginRight: '60px' }}>
+                      <MenuItem component={Link} to="collection/duelist" onClick={handleSettingsMenuClose} style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Duelist?.label}</MenuItem>
+                      <MenuItem component={Link} to="collection/dailyunsettle" onClick={handleSettingsMenuClose} style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Unsettledlist?.label}</MenuItem>
+                      <MenuItem component={Link} to="collection/agentunsettle" onClick={handleSettingsMenuClose} style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Unsettledsummary?.label}</MenuItem>
+                      <MenuItem component={Link} to="collection/dailycollectionbranchsummary" onClick={handleSettingsMenuClose} style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Collectionsummary?.label}</MenuItem>
+                      <MenuItem component={Link} to="collection/dailycollectionreport" onClick={handleSettingsMenuClose} style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Collectionlist?.label}</MenuItem>
+                    </div>
+                  )}
+                </ListItem>
+              ))}
+            </List>
+
+            <List>
+              {['Report'].map((text, index) => (
+                <ListItem key={text} disablePadding style={{ display: 'block' }} onClick={report === false ? handleReportOpen : handleReportClose}>
+                  <ListItemButton
+                    style={{
+                      minHeight: 48,
+                      paddingLeft: 2.5,
+                      paddingRight: 2.5,
+                    }}
+
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <ListItemIcon
+                        style={{
+                          minWidth: 0,
+                          marginRight: open ? 3 : 'auto',
+                          justifyContent: 'center',
+                          marginLeft: 15,
+                        }}
+                      >
+                        {index % 2 === 0 ? <img src={reportIcons} /> : <MailIcon />}
+                      </ListItemIcon>
+                      <ListItemText primary={text} style={{ opacity: open ? 1 : 0, marginLeft: open ? 14 : 0, }} />
+                    </div>
+                    {report === false ?
+                      <KeyboardArrowDownIcon
+                        sx={{ fontSize: '20px', marginLeft: '108px', cursor: 'pointer' }}
+                        onClick={handleReportOpen}
+                      /> :
+                      <KeyboardArrowUpIcon
+                        sx={{ fontSize: '20px', marginLeft: '108px', cursor: 'pointer' }}
+                        onClick={handleReportClose}
+                      />
+                    }
+                  </ListItemButton>
+                  {open && (
+                    <div style={{ display: report === false ? 'none' : 'flex', flexDirection: 'column', marginRight: '60px' }}>
+                      <MenuItem component={Link} to="/enrollment" onClick={handleSettingsMenuClose} style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Enrolment?.label}</MenuItem>
+                      <MenuItem component={Link} to="" onClick={handleSettingsMenuClose} style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Agreement?.label}</MenuItem>
+                    </div>
+                  )}
+                </ListItem>
+              ))}
+            </List>
+            <Divider />
+            <List>
+              {['Favorite'].map((text, index) => (
+                <ListItem key={text} disablePadding style={{ display: 'block' }}>
+                  <ListItemButton
+                    style={{
+                      minHeight: 48,
+                      justifyContent: open ? 'initial' : 'center',
+                      paddingLeft: 2.5,
+                    }}
+                  >
+                    <ListItemIcon
+                      style={{
+                        minWidth: 0,
+                        marginRight: open ? 3 : 'auto',
+                        justifyContent: 'center',
+                        marginLeft: 15,
+                      }}
+                    >
+                      {index % 2 === 0 ? <img src={favoriteIcon} /> : <MailIcon />}
+                    </ListItemIcon>
+                    <ListItemText primary={text} style={{ opacity: open ? 1 : 0, marginLeft: open ? 8 : 0, }} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          </div> : <div />
+        }
+
+        {account == true ?
+          <div style={{ marginLeft: '13px' }}>
+            <List>
+              {['Creation'].map((text, index) => (
+                <ListItem key={text} disablePadding style={{ display: 'block' }} onClick={auct === false ? handleAuctOpen : handleAuctClose}>
+                  <ListItemButton
+                    style={{
+                      minHeight: 48,
+                      // justifyContent: 'space-between',
+                      paddingLeft: 2.5,
+                      paddingRight: 2.5,
+                    }}
+
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <ListItemIcon
+                        style={{
+                          minWidth: 0,
+                          marginRight: open ? 3 : 'auto',
+                          justifyContent: 'center',
+                          marginLeft: 15,
+                        }}
+
+                      >
+                        {index % 2 === 0 ? <img src={AuctionIcon} /> : <MailIcon />}
+                      </ListItemIcon>
+                      <ListItemText primary={text} style={{ opacity: open ? 1 : 0, marginLeft: open ? 8 : 0, }} />
+                    </div>
+                    {auct === false ?
+                      <KeyboardArrowDownIcon
+                        sx={{ fontSize: '20px', marginLeft: '98px', cursor: 'pointer' }}
+                        onClick={handleAuctOpen}
+                      /> :
+                      <KeyboardArrowUpIcon
+                        sx={{ fontSize: '20px', marginLeft: '95px', cursor: 'pointer' }}
+                        onClick={handleAuctClose}
+                      />
+                    }
+                  </ListItemButton>
+                  {open && (
+                    <div style={{ display: auct === false ? 'none' : 'flex', flexDirection: 'column', marginRight: '60px' }}>
+                      <MenuItem onClick={handleSettingsMenuClose} style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}
+                        component={Link}
+                        to={ROUTES.vendorlist}>{resourceBundleData?.Addvendor?.label}</MenuItem>
+                      <MenuItem onClick={handleSettingsMenuClose} style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}
+                        component={Link}
+                        to={ROUTES.banklist}>{resourceBundleData?.Bank?.label}</MenuItem>
+                      {/* <MenuItem component={Link} to="/fd-list" onClick={handleSettingsMenuClose} style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Fd?.label}</MenuItem> */}
+                      <MenuItem component={Link} to="/group-creation" onClick={handleSettingsMenuClose} style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Groupledger?.label}</MenuItem>
+                      <MenuItem component={Link} to="/configured-charges" onClick={handleSettingsMenuClose} style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Chrages?.label}</MenuItem>
+                      <MenuItem component={Link} to="/gst-tds" onClick={handleSettingsMenuClose} style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.GSTTDs?.label}</MenuItem>
+                    </div>
+                  )}
+                </ListItem>
+              ))}
+            </List>
+
+            <List>
+              {['Transaction'].map((text, index) => (
+                <ListItem key={text} disablePadding style={{ display: 'block' }} onClick={guarant === false ? handleGuarantorOpen : handleGuarantorClose}>
+                  <ListItemButton
+                    style={{
+                      minHeight: 48,
+                      // justifyContent: 'space-between',
+                      paddingLeft: 2.5,
+                      paddingRight: 2.5,
+                    }}
+
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <ListItemIcon
+                        style={{
+                          minWidth: 0,
+                          marginRight: open ? 3 : 'auto',
+                          justifyContent: 'center',
+                          marginLeft: 15,
+                        }}
+                      >
+                        {index % 2 === 0 ? <img src={GuarantorDetailsIcon} /> : <MailIcon />}
+                      </ListItemIcon>
+                      <ListItemText primary={text} style={{ opacity: open ? 1 : 0, marginLeft: open ? 8 : 0, }} />
+                    </div>
+                    {guarant === false ?
+                      <KeyboardArrowDownIcon
+                        sx={{ fontSize: '20px', marginLeft: '75px', cursor: 'pointer' }}
+                        onClick={handleGuarantorOpen}
+                      /> :
+                      <KeyboardArrowUpIcon
+                        sx={{ fontSize: '20px', marginLeft: '40px', cursor: 'pointer' }}
+                        onClick={handleGuarantorClose}
+                      />
+                    }
+                  </ListItemButton>
+                  {open && (
+                    <div style={{ display: guarant === false ? 'none' : 'flex', flexDirection: 'column', marginRight: '60px' }}>
+                      <MenuItem component={Link} to="/fd-list" style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.AddFd?.label}</MenuItem>
+                      <MenuItem component={Link} to="/deposite-page" style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Bankdeposit?.label}</MenuItem>
+                      <MenuItem component={Link} to="/withdraw-page" style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Bankwithdrawal?.label}</MenuItem>
+                      <MenuItem component={Link} to="/general-payment" style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Generalpayment?.label}</MenuItem>
+                      <MenuItem component={Link} to="/pettycash-payment" style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Pettycashpay?.label}</MenuItem>
+                      <MenuItem component={Link} to="/general-receipt" style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Generalrece?.label}</MenuItem>
+                      <MenuItem component={Link} to="/journal-voucher" style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Jounralvoch?.label}</MenuItem>
+                      <MenuItem component={Link} to="/contra-voucher-info/" style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >Contra Voucher</MenuItem>
+                      <MenuItem style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Addexpense?.label}</MenuItem>
+                      <MenuItem style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Addexpense?.label}</MenuItem>
+                      <MenuItem style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Addexpense?.label}</MenuItem>
+                      <MenuItem style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.CDR?.label}</MenuItem>
+                      <MenuItem component={Link} to="/collection/banksummary" style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Bankreconsolation?.label}</MenuItem>
+                      <MenuItem component={Link} to="/accountledger-view" style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Ledgerview?.label}</MenuItem>
+                      <MenuItem style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Posting?.label}</MenuItem>
+                    </div>
+                  )}
+                </ListItem>
+              ))}
+            </List>
+
+            <List>
+              {['Report'].map((text, index) => (
+                <ListItem key={text} disablePadding style={{ display: 'block' }} onClick={collect === false ? handleCollectionOpen : handleCollectionClose}>
+                  <ListItemButton
+                    style={{
+                      minHeight: 48,
+                      paddingLeft: 2.5,
+                      paddingRight: 2.5,
+                    }}
+
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <ListItemIcon
+                        style={{
+                          minWidth: 0,
+                          marginRight: open ? 3 : 'auto',
+                          justifyContent: 'center',
+                          marginLeft: 15,
+                        }}
+                      >
+                        {index % 2 === 0 ? <img src={reportIcons} /> : <MailIcon />}
+                      </ListItemIcon>
+                      <ListItemText primary={text} style={{ opacity: open ? 1 : 0, marginLeft: open ? 14 : 0, }} />
+                    </div>
+                    {collect === false ?
+                      <KeyboardArrowDownIcon
+                        sx={{ fontSize: '20px', marginLeft: '108px', cursor: 'pointer' }}
+                        onClick={handleCollectionOpen}
+                      /> :
+                      <KeyboardArrowUpIcon
+                        sx={{ fontSize: '20px', marginLeft: '90px', cursor: 'pointer' }}
+                        onClick={handleCollectionClose}
+                      />
+                    }
+                  </ListItemButton>
+                  {open && (
+                    <div style={{ display: collect === false ? 'none' : 'flex', flexDirection: 'column', marginRight: '60px' }}>
+                      <MenuItem style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Cahshinhand?.label}</MenuItem>
+                      <MenuItem style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Pettycaash?.label}</MenuItem>
+                      <MenuItem style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Cheque?.label}</MenuItem>
+                      <MenuItem style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Ledgerview?.label}</MenuItem>
+                      <MenuItem style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.GSTreport?.label}</MenuItem>
+                      <MenuItem style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Pl?.label}</MenuItem>
+                      <MenuItem style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Balancesheet?.label}</MenuItem>
+                      <MenuItem style={{ paddingLeft: '40px', paddingRight: '20px', fontSize: '13px' }}  >{resourceBundleData?.Trail?.label}</MenuItem>
+                    </div>
+                  )}
+                </ListItem>
+              ))}
+            </List>
+
+          </div> : <div />}
+        {hr == true ?
+          <div style={{ marginLeft: '13px' }}>
+            <List>
+              {['Employee creation'].map((text, index) => (
+                <ListItem key={text} disablePadding style={{ display: 'block' }} onClick={collect === false ? handleCollectionOpen : handleCollectionClose}>
+                  <ListItemButton
+                    style={{
+                      minHeight: 48,
+                      paddingLeft: 2.5,
+                      paddingRight: 2.5,
+                    }}
+                    component={Link}
+                    to={ROUTES.employeelist}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <ListItemIcon
+                        style={{
+                          minWidth: 0,
+                          marginRight: open ? 3 : 'auto',
+                          justifyContent: 'center',
+                          marginLeft: 15,
+                        }}
+                      >
+                        {index % 2 === 0 ? <img src={employeeIcon} /> : <MailIcon />}
+                      </ListItemIcon>
+                      <ListItemText primary={text} style={{ opacity: open ? 1 : 0, marginLeft: open ? 8 : 0, }} />
+                    </div>
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+            <List>
+              {['Incentive'].map((text, index) => (
+                <ListItem key={text} disablePadding style={{ display: 'block' }} onClick={collect === false ? handleCollectionOpen : handleCollectionClose}>
+                  <ListItemButton
+                    style={{
+                      minHeight: 48,
+                      paddingLeft: 2.5,
+                      paddingRight: 2.5,
+                    }}
+
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <ListItemIcon
+                        style={{
+                          minWidth: 0,
+                          marginRight: open ? 3 : 'auto',
+                          justifyContent: 'center',
+                          marginLeft: 15,
+                        }}
+                      >
+                        {index % 2 === 0 ? <img src={incentiveIcon} /> : <MailIcon />}
+                      </ListItemIcon>
+                      <ListItemText primary={text} style={{ opacity: open ? 1 : 0, marginLeft: open ? 8 : 0, }} />
+                    </div>
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+            <List>
+              {['Holiday'].map((text, index) => (
+                <ListItem key={text} disablePadding style={{ display: 'block' }} onClick={collect === false ? handleCollectionOpen : handleCollectionClose}>
+                  <ListItemButton
+                    style={{
+                      minHeight: 48,
+                      paddingLeft: 2.5,
+                      paddingRight: 2.5,
+                    }}
+                    component={Link}
+                    to={ROUTES.HolidayInformation}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <ListItemIcon
+                        style={{
+                          minWidth: 0,
+                          marginRight: open ? 3 : 'auto',
+                          justifyContent: 'center',
+                          marginLeft: 15,
+                        }}
+                      >
+                        {index % 2 === 0 ? <img src={holidayIcon} /> : <MailIcon />}
+                      </ListItemIcon>
+                      <ListItemText primary={text} style={{ opacity: open ? 1 : 0, marginLeft: open ? 8 : 0, }} />
+                    </div>
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+            <List>
+              {['Designation'].map((text, index) => (
+                <ListItem key={text} disablePadding style={{ display: 'block' }} onClick={collect === false ? handleCollectionOpen : handleCollectionClose}>
+                  <ListItemButton
+                    style={{
+                      minHeight: 48,
+                      paddingLeft: 2.5,
+                      paddingRight: 2.5,
+                    }}
+                    component={Link}
+                    to={ROUTES.designationinfo}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <ListItemIcon
+                        style={{
+                          minWidth: 0,
+                          marginRight: open ? 3 : 'auto',
+                          justifyContent: 'center',
+                          marginLeft: 15,
+                        }}
+                      >
+                        {index % 2 === 0 ? <img src={CollectionIcon} /> : <MailIcon />}
+                      </ListItemIcon>
+                      <ListItemText primary={text} style={{ opacity: open ? 1 : 0, marginLeft: open ? 8 : 0, }} />
+                    </div>
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+            <List>
+              {['Report'].map((text, index) => (
+                <ListItem key={text} disablePadding style={{ display: 'block' }} onClick={payment === false ? handlePaymentOpen : handlePaymentClose}>
+                  <ListItemButton
+                    style={{
+                      minHeight: 48,
+                      // justifyContent: 'space-between',
+                      paddingLeft: 2.5,
+                      paddingRight: 2.5,
+                    }}
+
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <ListItemIcon
+                        style={{
+                          minWidth: 0,
+                          marginRight: open ? 3 : 'auto',
+                          justifyContent: 'center',
+                          marginLeft: 15,
+                        }}
+                      >
+                        {index % 2 === 0 ? <img src={reportIcons} /> : <MailIcon />}
+                      </ListItemIcon>
+                      <ListItemText primary={text} style={{ opacity: open ? 1 : 0, marginLeft: open ? 14 : 0, }} />
+                    </div>
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          </div> : <div />}
+      </Drawer>
+    </Box>
+  );
+}
+
+export default SidebarDrawer;
+
+
+
+
+
+

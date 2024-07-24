@@ -1,0 +1,10 @@
+.btnnav{
+    border:' 10px solid ';
+border-image-source: linear-gradient(93.67deg, #EEAF53 10.71%, #FFFFFF 36.09%, #A2793C 64.93%, #EEAF53 98.72%);
+
+}
+*{
+   
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none;
+}

@@ -1,0 +1,5 @@
+.achivementscroll{
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none;
+    margin-bottom: 20px;
+}
